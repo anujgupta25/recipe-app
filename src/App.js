@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react';
+import Header from './component/Header';
+import Recipe from './component/recipe';
+import Footer from './component/footer';
 
-function App() {
+function App(props) {
+  const[search, setSearch] = useState('indian street');
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const api = async() =>{
+    const APP_KEY ='97cd6fc4d3db5e7a8130c2f548353eb2';
+    const APP_ID ='8a573ae6';
+    const req = await fetch(`https://api.edamam.com/search?q=${search}&app_id=${APP_ID}&app_key=${APP_KEY}`);
+    setLoading(true);
+    const result = await req.json();
+    console.log(result.hits);
+    setItems(result.hits);
+    setLoading(false);
+  }
+  const onSearch = () =>{
+    api();
+  }
+
+  useEffect(()=>{
+    api();
+  }, []);
+
+  const onInputChange = (e) => {
+    setSearch(e.target.value);
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Header search ={search} onInputChange={onInputChange} onSearch = {onSearch} />
+    <Recipe items = {items} loading = {loading}  />
+    <Footer />
+    </>
   );
 }
 
