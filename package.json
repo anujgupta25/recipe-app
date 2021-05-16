@@ -1,6 +1,6 @@
 {
   "name": "recipe-app",
-  "homepage":"https://anujgupta25.github.io/recipes",
+  "homepage":"https://anujgupta25.github.io/recipe",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
